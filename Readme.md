@@ -83,12 +83,14 @@ Add the **Access Token** to the **Facebook Graph API Node** in n8n.
    - **Consumer key = API Key**
    - **Consumer Secret = API SECRET**
    - Body: multipart/form-data with binary file.
-   - Refer this
-     ![alt text](image.png)
 
-     ## This additional_owners value came from :
+   ## Refer this
 
-     ![alt text](image-1.png)
+   ![alt text](public/image.png)
+
+   ## This additional_owners value came from :
+
+   ![alt text](public/image-1.png)
 
    - Save response `media_id_string` to use in tweet.
 
