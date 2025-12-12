@@ -1,0 +1,450 @@
+{
+  "name": "Global Trend Assignment",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM",
+          "mode": "list",
+          "cachedResultName": "To-do list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 130537016,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM/edit#gid=130537016"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2224,
+        -1920
+      ],
+      "id": "700c0704-db7d-42ba-afaa-ab15dd0e3bbc",
+      "name": "Read the Sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "NnegE0CO92aoZxgX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6f475261-f0cb-4105-a1aa-7345d531f949",
+              "leftValue": "={{ $json.Tweet }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2000,
+        -2112
+      ],
+      "id": "4b54503d-2d68-467d-bfa5-66762f98ab8a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$items().length}}",
+              "operation": "greater",
+              "value2": 0
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1566658-c62f-4945-afcf-72ec344a0886",
+      "name": "IF Time",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2000,
+        -1920
+      ]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.Content }}"
+              },
+              {
+                "name": "url",
+                "value": "={{ $json.Image_URL }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        -1920
+      ],
+      "id": "bda60f30-e6fa-42a8-a3f4-b97304b8673c",
+      "name": "both image and write",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "0bv4TbWvlPTbLZSQ",
+          "name": "Facebook Graph account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.Content || \" \" }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        -2112
+      ],
+      "id": "4efe887e-142b-4b19-92a4-efcc93033f2e",
+      "name": "only write",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "0bv4TbWvlPTbLZSQ",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM",
+          "mode": "list",
+          "cachedResultName": "To-do list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 130537016,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-wlVEPF-WQ35F4nUS1v0RS41A40Cul9I5xLbrAKD3hM/edit#gid=130537016"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2448,
+        -1920
+      ],
+      "id": "8d31b853-72bb-4757-9d94-2c74d2b9de23",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "C9uVxQtHe2a9n5sC",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.twitter.com/1.1/media/upload.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth1Api",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "media",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "additional_owners",
+              "value": "1999533454225244160"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1552,
+        -1728
+      ],
+      "id": "ec6c0a32-cc12-4401-9a94-bd24263bdb9b",
+      "name": "Upload Media",
+      "credentials": {
+        "twitterOAuth1Api": {
+          "id": "QiivJrJKWlETBKMn",
+          "name": "X OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twitter.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"text\": \"{{ $('Tweet Content less than 260 words').item.json.Content }}\",\n     \"media\": {\n       \"media_ids\": [\n            \"{{ $json.media_id_string }}\"\n        ]\n    }\n} ",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1328,
+        -1728
+      ],
+      "id": "9cb7c3b4-8cea-4158-addb-58c01fd4fc06",
+      "name": "Post on Twitter",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "qWFxslLtd5bZ7j6l",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e0ca7d7c-7fcc-4d2a-9ae4-958041d1d358",
+              "leftValue": "={{ $json.Content.length }}",
+              "rightValue": 260,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -2000,
+        -1728
+      ],
+      "id": "fd3dcc30-dd90-498c-b5fe-e18de7a45ba9",
+      "name": "Tweet Content less than 260 words"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.Image_URL }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1776,
+        -1728
+      ],
+      "id": "d0b83f8c-66c3-4f68-82e5-2dddc7a21f08",
+      "name": "Image URL to Binary"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Read the Sheet2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF Time",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tweet Content less than 260 words",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "only write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Time": {
+      "main": [
+        [
+          {
+            "node": "both image and write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "both image and write": {
+      "main": [
+        []
+      ]
+    },
+    "only write": {
+      "main": [
+        []
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read the Sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Media": {
+      "main": [
+        [
+          {
+            "node": "Post on Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tweet Content less than 260 words": {
+      "main": [
+        [
+          {
+            "node": "Image URL to Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image URL to Binary": {
+      "main": [
+        [
+          {
+            "node": "Upload Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "35c9e1eb-8faf-46de-8cac-003706606dd8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "20c2b92e67189a28af0ddb5d0c6f9010548b392303e9becd6bddd3b93a2e62d0"
+  },
+  "id": "PzEey9t4zelFqzn3",
+  "tags": []
+}
