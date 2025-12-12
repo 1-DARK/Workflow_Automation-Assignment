@@ -1,3 +1,19 @@
+## Workflow Automation
+
+Developer apps for Facebook and X (Twitter) are created, required permissions are set, long-lived access tokens are generated, and connected to n8n nodes.
+Content and image URLs are fetched from a sheet, images are converted to binary, and uploaded to X using the media upload API.
+Posting is automated by sending the content and uploaded media to Facebook Pages and X via their APIs, while ensuring content length limits and proper authentication.
+
+**All recordings and screenshots are available in the public folder.**
+
+<video controls src="public/Workflow Automation.mov" title="Title"></video>
+
+![alt text](<public/Full Working.png>)
+
+![alt text](<public/Facebook Post.png>)
+
+![alt text](<public/X Post.png>)
+
 ## Facebook Graph API Setup for n8n
 
 Follow these steps to configure Facebook posting inside n8n:
@@ -69,6 +85,10 @@ Add the **Access Token** to the **Facebook Graph API Node** in n8n.
    - Body: multipart/form-data with binary file.
    - Refer this
      ![alt text](image.png)
+
+     ## This additional_owners value came from :
+
+     ![alt text](image-1.png)
 
    - Save response `media_id_string` to use in tweet.
 
